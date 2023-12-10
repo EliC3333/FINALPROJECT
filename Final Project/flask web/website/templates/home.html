@@ -1,0 +1,86 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+    %}
+    <style>
+        body {
+          background-color: #1a1a1a; /* Dark background color */
+          color: #ffffff; /* Light text color */
+        }
+      
+        h1, h2 {
+          color: #ffffff; /* Light text color for headings */
+        }
+      
+        .list-group-item {
+          background-color: #333333; /* Darker background color for list items */
+          border-color: #444444; /* Border color for list items */
+          color: #ffffff; /* Light text color for list items */
+        }
+      
+        .form-control {
+          background-color: #333333; /* Darker background color for form input */
+          color: #ffffff; /* Light text color for form input */
+        }
+      
+        .btn-primary {
+          background-color: #007bff; /* Primary button color in dark mode */
+          border-color: #007bff; /* Border color for the button */
+        }
+      
+        .qr-code-container {
+          background-color: #333333; /* Dark background color for QR code container */
+          color: #ffffff; /* Light text color for QR code container */
+        }
+      
+        .error-message {
+          color: #ff0000; /* Error message color in dark mode */
+        }
+      </style>
+    <h1 align="center">Notes</h1>
+    <ul class="list-group list-group-flush" id="notes">
+      {% for note in user.notes %}
+      <li class="list-group-item">
+        {{ note.data }}
+        <button type="button" class="close" onClick="deleteNote({{ note.id }})">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </li>
+      {% endfor %}
+    </ul>
+    <form method="POST">
+      <textarea name="note" id="note" class="form-control"></textarea>
+      <br />
+      <div align="center">
+        <button type="submit" class="btn btn-primary">Add Note</button>
+      </div>
+    </form>
+    <div class="qr-code-container">
+        <h2>Scan the QR code to learn JAVA!</h2>
+        <div class="qr-code"></div>
+        <button class="fetch-button" onclick="fetchQRCode()">Fetch QR Code</button>
+        <p class="error-message" style="display: none; color: red;"></p>
+      </div>
+      <script>
+        function fetchQRCode() {
+          const qrCodeContainer = document.querySelector('.qr-code');
+    
+          if (!qrCodeContainer.innerHTML.trim()) {
+            const qrCodeUrl = 'https://qrtag.net/api/qr.png?url=https://www.geeksforgeeks.org/java/';
+            const qrCodeImage = document.createElement('img');
+            try {
+              qrCodeImage.src = qrCodeUrl;
+              qrCodeImage.alt = 'QR Code';
+            } catch (error) {
+    
+              qrCodeContainer.innerHTML = 'Failed to load QR Code';
+              return;
+            }
+            qrCodeContainer.innerHTML = '';
+            qrCodeContainer.appendChild(qrCodeImage);
+          }
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+          const threadsContainer = document.querySelector('.threads-container');
+        });
+      </script>
+    {% endblock %} 
+
